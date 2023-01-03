@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../utilities.h"
 
 const int DEFAULT_FORCE = 5;
 const int DEFAULT_MAX_HP = 100;
@@ -101,7 +102,6 @@ int Player::getAttackStrength() const {
 }
 
 ostream &operator<<(ostream &os, const Player &player) {
-    os << player.m_name << "    " << player.m_force << "    " << player.m_HP
-       << "    " << player.m_coins << "    " << player.getJob() << endl;
+    printPlayerDetails(os,player.m_name,player.getJob(),player.m_level,player.m_force,player.m_HP,player.m_coins);
     return os;
 }
