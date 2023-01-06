@@ -50,6 +50,10 @@ int Player::getLevel() const {
     return this->m_level;
 }
 
+string Player::getName() const {
+    return m_name;
+}
+
 void Player::buff(int amount) {
     if (amount > 0) {
         this->m_force += amount;

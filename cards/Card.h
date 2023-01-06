@@ -5,8 +5,8 @@
 #define EX2_Card_H
 
 #include <string>
-#include "..\players\Player.h"
-#include "utilities.h"
+#include "../players/Player.h"
+#include "../utilities.h"
 
 /*
  *  CardType:
@@ -16,9 +16,7 @@
  *  HEAL - Increase your player's HP by 'm_heal' points  of CardStats (no more than maxHP points).
  *  TREASURE - Get 'm_profit' coins of CardStats.
 */
-enum class CardType {
-    Battle, Buff, Heal, Treasure
-}; // The type of the Card
+
 
 class Card {
 public:
@@ -30,7 +28,7 @@ public:
      * @return
      *      A new instance of Card.
     */
-    Card(CardType type, const CardStats& stats);
+    Card();
 
 
     /*
@@ -40,35 +38,22 @@ public:
      * @return
      *      void
     */
-    void applyEncounter(Player &player) const;
-
-
-    /*
-     * Prints the card info:
-     *
-     * @return
-     *      void
-    */
-    void printInfo() const;
-
-
-    /*
-     * C'tor to the "default card" - Treasure card that gives 0 coins
-    */
-    Card(): m_effect(CardType::Treasure), m_stats() {}
-
+    virtual void applyEncounter(Player &player) const = 0;
 
     /*
      * Here we are explicitly telling the compiler to use the default methods
     */
-    Card(const Card&) = default;
-    ~Card() = default;
-    Card& operator=(const Card& other) = default;
+    Card(const Card &) = default;
 
+    virtual ~Card();
 
-private:
-    CardType m_effect;
-    CardStats m_stats;
+    Card &operator=(const Card &other) = default;
+
+    virtual string getName() const = 0;
+
+    friend ostream &operator<<(ostream &os, Card &card);
+
+    virtual void printInfo(ostream &os);
 
 };
 

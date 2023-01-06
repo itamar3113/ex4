@@ -17,6 +17,8 @@ set(CMAKE_CPP_FLAGS ${MTM_FLAGS_DEBUG})
 
 
 # Add the names of your source files here
-set(CPP_FILES "main.cpp" "players/Player.cpp" "players/Ninja.cpp" "players/Healer.cpp" "players/Warrior.cpp" "utilities.cpp")
+set(CPP_FILES main.cpp players/Player.cpp players/Ninja.cpp players/Healer.cpp players/Warrior.cpp utilities.cpp
+        cards/BattleCard.cpp cards/BattleCard.h cards/Card.cpp cards/Gremlin.cpp cards/Witch.cpp cards/Dragon.cpp cards/Mana.cpp cards/Barfight.cpp)
+
 
 add_executable(mtmchkin ${CPP_FILES})
