@@ -57,6 +57,8 @@ public:
 
     string getName() const;
 
+    int getCoins() const;
+
     /*
     Raises the player's m_force in the amount received as an argument.
     @param amount - the amount to raise the m_force.

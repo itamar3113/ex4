@@ -54,6 +54,10 @@ string Player::getName() const {
     return m_name;
 }
 
+int Player::getCoins() const {
+    return m_coins;
+}
+
 void Player::buff(int amount) {
     if (amount > 0) {
         this->m_force += amount;
@@ -106,6 +110,6 @@ int Player::getAttackStrength() const {
 }
 
 ostream &operator<<(ostream &os, const Player &player) {
-    printPlayerDetails(os,player.m_name,player.getJob(),player.m_level,player.m_force,player.m_HP,player.m_coins);
+    printPlayerDetails(os, player.m_name, player.getJob(), player.m_level, player.m_force, player.m_HP, player.m_coins);
     return os;
 }
