@@ -49,12 +49,13 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
             validSize = true;
         }
     }
-    string playerDetails;
+    string playerName;
+    string playerClass;
     for (int i = 0; i < teamSize; ++i) {
         printInsertPlayerMessage();
-        cin >> playerDetails;
+        cin >> playerName >> playerClass;
         try {
-            players.push_back(createPlayer(playerDetails));
+           players.push_back(createPlayer(playerName, playerClass));//
         } catch (InvalidPlayerNameException &e) {
             cerr << e.what();
             printInvalidName();
@@ -148,20 +149,18 @@ unique_ptr<Card> createCardByName(string &name) {
     throw InvalidCardNameException("name of card is illegal");
 }
 
-unique_ptr<Player> createPlayer(string &playerDetails) {
-    string name = playerDetails.substr(0, playerDetails.find(' '));
-    if (!nameIsLegal(name)) {
+unique_ptr<Player> createPlayer(string &playerName, string &playerClass) {
+    if (!nameIsLegal(playerName)) {
         throw InvalidPlayerNameException("name of player is illegal");
     }
-    string playerClass = playerDetails.substr(playerDetails.find(' ') + 1);
     if (playerClass == NINJA) {
-        return unique_ptr<Player>(new Ninja(name));
+        return unique_ptr<Player>(new Ninja(playerName));
     }
     if (playerClass == WARRIOR) {
-        return unique_ptr<Player>(new Warrior(name));
+        return unique_ptr<Player>(new Warrior(playerName));
     }
     if (playerClass == HEALER) {
-        return unique_ptr<Player>(new Healer(name));
+        return unique_ptr<Player>(new Healer(playerName));
     }
     throw InvalidClassException("class is illegal");
 }

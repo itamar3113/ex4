@@ -79,7 +79,7 @@ bool nameIsLegal(string &name);
 
 unique_ptr<Card> createCardByName(string &name);
 
-unique_ptr<Player> createPlayer(string &playerDetails);
+unique_ptr<Player> createPlayer(string &playerName, string &playerClass);
 
 void insertPlayers(deque<unique_ptr<Player>>& players);
 
