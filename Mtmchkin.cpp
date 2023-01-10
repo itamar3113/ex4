@@ -3,6 +3,7 @@
 //
 
 
+#include <limits>
 #include "Mtmchkin.h"
 
 const int MAX_TEAM_SIZE = 6;
@@ -43,10 +44,17 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     while (!validSize) {
         cin >> teamSize;
         //todo add exception for non numbers
-        if (teamSize > MAX_TEAM_SIZE || teamSize < MIN_TEAM_SIZE) {
+        if (cin.fail()) {
+            // input is not an integer
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             printInvalidTeamSize();
         } else {
-            validSize = true;
+            if (teamSize > MAX_TEAM_SIZE || teamSize < MIN_TEAM_SIZE) {
+                printInvalidTeamSize();
+            } else {
+                validSize = true;
+            }
         }
     }
     string playerName;
@@ -55,7 +63,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
         printInsertPlayerMessage();
         cin >> playerName >> playerClass;
         try {
-           players.push_back(createPlayer(playerName, playerClass));//
+            players.push_back(createPlayer(playerName, playerClass));//
         } catch (InvalidPlayerNameException &e) {
             cerr << e.what();
             printInvalidName();
@@ -105,15 +113,15 @@ int Mtmchkin::getNumberOfRounds() const {
 void Mtmchkin::printLeaderBoard() const {
     printLeaderBoardStartMessage();
     int rank = 0;
-    for (const unique_ptr<Player>& playerPtr : m_winners) {
+    for (const unique_ptr<Player> &playerPtr: m_winners) {
         rank += 1;
         printPlayerLeaderBoard(rank, *playerPtr);
     }
-    for (const unique_ptr<Player>& playerPtr : m_players) {
+    for (const unique_ptr<Player> &playerPtr: m_players) {
         rank += 1;
         printPlayerLeaderBoard(rank, *playerPtr);
     }
-    for (const unique_ptr<Player>& playerPtr : m_losers) {
+    for (const unique_ptr<Player> &playerPtr: m_losers) {
         rank += 1;
         printPlayerLeaderBoard(rank, *playerPtr);
     }
