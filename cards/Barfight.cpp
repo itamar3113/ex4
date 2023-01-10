@@ -6,7 +6,7 @@
 
 const string NAME = "Barfight";
 const string WARRIOR = "Warrior";
-const int DAMAGE = 8;
+const int DAMAGE = 10;
 
 Barfight::Barfight() {}
 
