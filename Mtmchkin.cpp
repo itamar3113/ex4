@@ -17,9 +17,12 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
                                                   m_losers(deque<unique_ptr<Player>>()),
                                                   m_winners(deque<unique_ptr<Player>>()),
                                                   m_roundCount(0) {
+    
     std::ifstream readFile(fileName);
-    //todo add exception
-    if (!readFile.is_open()){
+    try {
+        readFile.open(fileName);
+    }
+    catch(const std::ios_base::failure& e) {
         throw DeckFileNotFound("Deck File Error: File not found");
     }
     string cardName;

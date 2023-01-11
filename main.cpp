@@ -26,6 +26,18 @@ int main() {
     ints.push(std::unique_ptr<Card>(new Merchant()));
     ints.push(std::move(ints.front()));
     ints.pop();
-    Mtmchkin mtmchkin("deck.txt");
+    try {
+        Mtmchkin mtmchkin("deck.txt");
+    }
+    catch (const DeckFileNotFound& e)
+    {
+        std::cout << e.what();
+        return 0;
+    }
+    catch (const DeckFileInvalidSize& e)
+    {
+        std::cout << e.what();
+        return 0;
+    }
 
 }
