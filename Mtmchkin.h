@@ -6,26 +6,26 @@
 #include <deque>
 #include <memory>
 #include <stack>
-#include "cards/Card.h"
-#include "players/Player.h"
-#include "players/Healer.h"
-#include "players/Warrior.h"
-#include "cards/Gremlin.h"
-#include "cards/Witch.h"
-#include "cards/Dragon.h"
-#include "cards/Mana.h"
-#include "cards/Barfight.h"
-#include "cards/Well.h"
-#include "cards/Treasure.h"
-#include "cards/Merchant.h"
-#include "players/Ninja.h"
+#include "Cards/Card.h"
+#include "Players/Player.h"
+#include "Players/Healer.h"
+#include "Players/Warrior.h"
+#include "Cards/Gremlin.h"
+#include "Cards/Witch.h"
+#include "Cards/Dragon.h"
+#include "Cards/Mana.h"
+#include "Cards/Barfight.h"
+#include "Cards/Well.h"
+#include "Cards/Treasure.h"
+#include "Cards/Merchant.h"
+#include "Players/Ninja.h"
 
 using namespace std;
 
 class Mtmchkin {
     //todo check if aad fields is allowed.
-    queue<unique_ptr<Card>> m_cards;
     deque<unique_ptr<Player>> m_players;
+    queue<unique_ptr<Card>> m_cards;
     deque<unique_ptr<Player>> m_losers;
     deque<unique_ptr<Player>> m_winners;
     int m_roundCount;
