@@ -54,7 +54,6 @@ public:
     friend ostream &operator<<(ostream &os, Card &card);
 
     virtual void printInfo(ostream &os);
-
 };
 
 

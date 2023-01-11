@@ -13,5 +13,6 @@ void Card::printInfo(ostream &os) {
 ostream &operator<<(ostream &os, Card &card) {
     card.printInfo(os);
     printEndOfCardDetails(os);
+    return os;
 }
 

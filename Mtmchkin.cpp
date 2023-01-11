@@ -17,9 +17,11 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
                                                   m_losers(deque<unique_ptr<Player>>()),
                                                   m_winners(deque<unique_ptr<Player>>()),
                                                   m_roundCount(0) {
-    ifstream readFile;
+    std::ifstream readFile(fileName);
     //todo add exception
-    readFile.open(fileName);
+    if (!readFile.is_open()){
+        throw DeckFileNotFound("Deck File Error: File not found");
+    }
     string cardName;
     //todo better way to initiate the queue
     while (getline(readFile, cardName)) {
@@ -32,6 +34,9 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
         }
     }
     readFile.close();
+    if (m_cards.size() < 5){
+        throw DeckFileInvalidSize("Deck File Error: Deck size is invalid");
+    }
     printStartGameMessage();
     insertPlayers(m_players);
 }
@@ -128,7 +133,7 @@ void Mtmchkin::printLeaderBoard() const {
 }
 
 unique_ptr<Card> createCardByName(string &name) {
-    if (name == "BarFight") {
+    if (name == "Barfight") {
         return unique_ptr<Card>(new Barfight());
     }
     if (name == "Dragon") {
