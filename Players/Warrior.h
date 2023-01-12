@@ -1,6 +1,8 @@
 //
 // Created by itamar on 03/01/2023.
 //
+#ifndef EX4_WARRIOR_H
+#define EX4_WARRIOR_H
 
 #include "Player.h"
 
@@ -14,3 +16,5 @@ public:
 
     string getJob() const override;
 };
+#endif //EX4_WARRIOR_H
+

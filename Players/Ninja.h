@@ -1,6 +1,9 @@
 //
 // Created by itamar on 03/01/2023.
 //
+#ifndef EX4_NINJA_H
+#define EX4_NINJA_H
+
 #include "Player.h"
 
 class Ninja : public Player {
@@ -13,3 +16,4 @@ public:
 
     string getJob() const override;
 };
+#endif //EX4_NINJA_H
