@@ -130,4 +130,4 @@ The Game has ended!!!
 The current ranking of the Team:
 Ranking    Player Name     Level     Force HP    Coins Job
 1          Itay            10        5     100   28    Warrior  
-2          Pikachu         1         0     0     10    Ninja  
+2          Pikachu         1         0     0     10    Ninja

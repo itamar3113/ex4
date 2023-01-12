@@ -18,9 +18,9 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
                                                   m_winners(deque<unique_ptr<Player>>()),
                                                   m_roundCount(0) {
     
-    std::ifstream readFile(fileName);
+    std::ifstream readFile;
     try {
-        readFile.open(fileName);
+        readFile.open(fileName,ios::in);
     }
     catch(const std::ios_base::failure& e) {
         throw DeckFileNotFound("Deck File Error: File not found");
@@ -86,6 +86,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
 }
 
 void Mtmchkin::playRound() {
+    m_roundCount += 1;
     printRoundStartMessage(getNumberOfRounds());
     deque<unique_ptr<Player>> tmpPlayers;
     while (!isGameOver()) {
@@ -104,7 +105,6 @@ void Mtmchkin::playRound() {
             m_players.pop_front();
         }
         m_players.swap(tmpPlayers);
-        m_roundCount += 1;
     }
     printGameEndMessage();
     printLeaderBoard();

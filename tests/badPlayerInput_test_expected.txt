@@ -87,4 +87,4 @@ The Game has ended!!!
 The current ranking of the Team:
 Ranking    Player Name     Level     Force HP    Coins Job
 1          rocky           7         5     0     22    Warrior  
-2          matamDalf       3         5     0     14    Healer  
+2          matamDalf       3         5     0     14    Healer

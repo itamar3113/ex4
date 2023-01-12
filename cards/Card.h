@@ -3,9 +3,9 @@
 //
 #ifndef EX2_Card_H
 #define EX2_Card_H
-
+#include <climits>
 #include <string>
-#include "../players/Player.h"
+#include "../Players/Player.h"
 #include "../utilities.h"
 
 /*

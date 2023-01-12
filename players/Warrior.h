@@ -1,7 +1,8 @@
 //
 // Created by itamar on 03/01/2023.
 //
-
+#ifndef WARRIOR_H
+#define WARRIOR_H
 #include "Player.h"
 
 class Warrior : public Player {
@@ -14,3 +15,4 @@ public:
 
     string getJob() const override;
 };
+#endif

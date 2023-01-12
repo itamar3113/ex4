@@ -27,7 +27,12 @@ int main() {
     ints.push(std::move(ints.front()));
     ints.pop();
     try {
-        Mtmchkin mtmchkin("deck.txt");
+        Mtmchkin mtmchkin("C:\\TDM-GCC-64\\ex4\\dragon.txt");
+        while(!mtmchkin.isGameOver() && mtmchkin.getNumberOfRounds() < 100)
+        {
+            mtmchkin.playRound();
+
+        }
     }
     catch (const DeckFileNotFound& e)
     {

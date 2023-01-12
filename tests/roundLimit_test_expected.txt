@@ -1301,4 +1301,4 @@ Nothing happened.
 The current ranking of the Team:
 Ranking    Player Name     Level     Force HP    Coins Job
 1          matamDalf       1         5     100   10    Healer  
-2          rocky           1         5     100   10    Warrior  
+2          rocky           1         5     100   10    Warrior

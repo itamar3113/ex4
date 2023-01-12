@@ -1193,4 +1193,4 @@ Healers know how to use mana, you've gained 10 health points.
 The current ranking of the Team:
 Ranking    Player Name     Level     Force HP    Coins Job
 1          Itay            1         5     100   210   Healer  
-2          Pikachu         1         5     0     190   Ninja  
+2          Pikachu         1         5     0     190   Ninja
