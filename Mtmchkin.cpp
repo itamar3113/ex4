@@ -66,20 +66,27 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     }
     string playerName;
     string playerClass;
+    bool flagReInput = false;
     for (int i = 0; i < teamSize; ++i) {
-        printInsertPlayerMessage();
+        if(!flagReInput)
+        {
+            printInsertPlayerMessage();
+        }
         cin >> playerName >> playerClass;
         try {
-            players.push_back(createPlayer(playerName, playerClass));//
+            players.push_back(createPlayer(playerName, playerClass));
+            flagReInput = false;
         } catch (InvalidPlayerNameException &e) {
-            cerr << e.what();
+            // cerr << e.what(); todo not needed
             printInvalidName();
             i -= 1;
+            flagReInput = true;
         }
         catch (InvalidClassException &e) {
-            cerr << e.what();
+            //cerr << e.what(); todo not needed
             printInvalidClass();
             i -= 1;
+            flagReInput = true;
         }
     }
 }
