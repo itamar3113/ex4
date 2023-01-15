@@ -4,6 +4,7 @@
 
 
 #include <limits>
+#include <algorithm>
 #include "Mtmchkin.h"
 
 const int MAX_TEAM_SIZE = 6;
@@ -75,20 +76,20 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     printEnterTeamSizeMessage();
     int teamSize;
     bool validSize = false;
+    string input;
     while (!validSize) {
-        cin >> teamSize;
-        if (cin.fail()) {
-            // input is not an integer
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            printInvalidTeamSize();
-        } else {
+        getline(cin, input);
+        if (all_of(input.begin(), input.end(), ::isdigit)) {
+            teamSize = stoi(input);
             if (teamSize > MAX_TEAM_SIZE || teamSize < MIN_TEAM_SIZE) {
                 printInvalidTeamSize();
             } else {
                 validSize = true;
             }
+        } else {
+            printInvalidTeamSize();
         }
+
     }
     string playerName;
     string playerClass;
