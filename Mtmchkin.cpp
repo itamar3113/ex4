@@ -89,6 +89,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
             }
         } else {
             printInvalidTeamSize();
+            printEnterTeamSizeMessage();
         }
 
     }
