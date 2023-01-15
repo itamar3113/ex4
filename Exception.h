@@ -11,19 +11,30 @@
 
 using namespace std;
 
-class DeckFileNotFound : public runtime_error {
+class DeckFileErrors : public runtime_error {
 public:
-    explicit DeckFileNotFound(const string &what) : runtime_error(what) {
+    explicit DeckFileErrors(const string &what) : runtime_error(what) {
     }
 };
 
-class DeckFileFormatError : public runtime_error {
+class DeckFileNotFound : public DeckFileErrors {
 public:
-    explicit DeckFileFormatError(const string &what) : runtime_error(what ) {
+    explicit DeckFileNotFound(const string &what) : DeckFileErrors(what) {
+    }
+};
+
+class DeckFileFormatError : public DeckFileErrors {
+public:
+    explicit DeckFileFormatError(const string &what) : DeckFileErrors(what ) {
 
     }
 };
 
+class DeckFileInvalidSize : public DeckFileErrors {
+public:
+    explicit DeckFileInvalidSize(const string &what) : DeckFileErrors(what) {
+    }
+};
 
 class InvalidClassException : public runtime_error {
 public:
@@ -31,11 +42,6 @@ public:
     }
 };
 
-class DeckFileInvalidSize : public runtime_error {
-public:
-    explicit DeckFileInvalidSize(const string &what) : runtime_error(what) {
-    }
-};
 class InvalidPlayerNameException : public runtime_error {
 public:
     explicit InvalidPlayerNameException(const string &what) : runtime_error(what) {
@@ -47,8 +53,5 @@ public:
     explicit InvalidCardNameException(const string &what) : runtime_error(what) {
     }
 };
-
-
-
 
 #endif //EX4_EXCEPTION_H
