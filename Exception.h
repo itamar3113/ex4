@@ -19,7 +19,15 @@ public:
 
 class DeckFileFormatError : public runtime_error {
 public:
-    explicit DeckFileFormatError(const string &what) : runtime_error(what) {
+    explicit DeckFileFormatError(const string &what) : runtime_error(what ) {
+
+    }
+};
+
+
+class InvalidClassException : public runtime_error {
+public:
+    explicit InvalidClassException(const string &what) : runtime_error(what) {
     }
 };
 
@@ -28,13 +36,6 @@ public:
     explicit DeckFileInvalidSize(const string &what) : runtime_error(what) {
     }
 };
-
-class InvalidClassException : public runtime_error {
-public:
-    explicit InvalidClassException(const string &what) : runtime_error(what) {
-    }
-};
-
 class InvalidPlayerNameException : public runtime_error {
 public:
     explicit InvalidPlayerNameException(const string &what) : runtime_error(what) {

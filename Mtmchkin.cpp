@@ -17,26 +17,25 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
                                                   m_losers(deque<unique_ptr<Player>>()),
                                                   m_winners(deque<unique_ptr<Player>>()),
                                                   m_roundCount(0) {
-    
-    std::ifstream readFile;
-    try {
-        readFile.open(fileName,ios::in);
-    }
-    catch(const std::ios_base::failure& e) {
+
+    std::ifstream readFile(fileName);
+    if(!readFile.is_open())
+    {
         throw DeckFileNotFound("Deck File Error: File not found");
     }
     string cardName;
     //todo better way to initiate the queue
+    int line=0;
     while (getline(readFile, cardName)) {
-        try {
-            m_cards.push(createCardByName(cardName));
-            //todo add exception
+        //try {
+        line++;
+        m_cards.push(createCardByName(cardName,line));
+        /*    //todo add exception
         } catch (InvalidCardNameException &e) {
             cerr << e.what();
             printInvalidName();
-        }
+        }*/
     }
-    readFile.close();
     if (m_cards.size() < 5){
         throw DeckFileInvalidSize("Deck File Error: Deck size is invalid");
     }
@@ -89,7 +88,7 @@ void Mtmchkin::playRound() {
     m_roundCount += 1;
     printRoundStartMessage(getNumberOfRounds());
     deque<unique_ptr<Player>> tmpPlayers;
-    while (!isGameOver()) {
+    //while (!isGameOver()) {
         while (!m_players.empty()) {
             printTurnStartMessage(m_players.front()->getName());
             m_cards.front()->applyEncounter(*(m_players.front()));
@@ -105,9 +104,10 @@ void Mtmchkin::playRound() {
             m_players.pop_front();
         }
         m_players.swap(tmpPlayers);
+    //}
+    if(isGameOver()) {
+        printGameEndMessage();
     }
-    printGameEndMessage();
-    printLeaderBoard();
 }
 
 bool Mtmchkin::isGameOver() const {
@@ -135,7 +135,7 @@ void Mtmchkin::printLeaderBoard() const {
     }
 }
 
-unique_ptr<Card> createCardByName(string &name) {
+unique_ptr<Card> createCardByName(string &name, const int LINE_ERROR) {
     if (name == "Barfight") {
         return unique_ptr<Card>(new Barfight());
     }
@@ -160,9 +160,7 @@ unique_ptr<Card> createCardByName(string &name) {
     if (name == "Witch") {
         return unique_ptr<Card>(new Witch());
     }
-    printInvalidName();
-    //todo add exception
-    throw InvalidCardNameException("name of card is illegal");
+    throw DeckFileFormatError( "Deck File Error: File format error in line "+to_string(LINE_ERROR));
 }
 
 unique_ptr<Player> createPlayer(string &playerName, string &playerClass) {

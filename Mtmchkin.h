@@ -77,7 +77,7 @@ public:
 
 bool nameIsLegal(string &name);
 
-unique_ptr<Card> createCardByName(string &name);
+unique_ptr<Card> createCardByName(string &name, const int LINE_ERROR);
 
 unique_ptr<Player> createPlayer(string &playerName, string &playerClass);
 
