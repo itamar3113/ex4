@@ -23,7 +23,6 @@
 using namespace std;
 
 class Mtmchkin {
-    //todo check if aad fields is allowed.
     deque<unique_ptr<Player>> m_players;
     queue<unique_ptr<Card>> m_cards;
     deque<unique_ptr<Player>> m_losers;
@@ -75,12 +74,5 @@ public:
     int getNumberOfRounds() const;
 };
 
-bool nameIsLegal(string &name);
-
-unique_ptr<Card> createCardByName(string &name, const int LINE_ERROR);
-
-unique_ptr<Player> createPlayer(string &playerName, string &playerClass);
-
-void insertPlayers(deque<unique_ptr<Player>>& players);
 
 #endif /* MTMCHKIN_H_ */

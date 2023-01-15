@@ -12,35 +12,62 @@ const string NINJA = "Ninja";
 const string WARRIOR = "Warrior";
 const string HEALER = "Healer";
 
-Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Player>>()),
-                                                  m_cards(queue<unique_ptr<Card>>()),
-                                                  m_losers(deque<unique_ptr<Player>>()),
-                                                  m_winners(deque<unique_ptr<Player>>()),
-                                                  m_roundCount(0) {
+//-----------------Non Members Functions -----------------------//
 
-    std::ifstream readFile(fileName);
-    if(!readFile.is_open())
-    {
-        throw DeckFileNotFound("Deck File Error: File not found");
+bool nameIsLegal(string &name) {
+    if (name.length() > 15) {
+        return false;
     }
-    string cardName;
-    //todo better way to initiate the queue
-    int line=0;
-    while (getline(readFile, cardName)) {
-        //try {
-        line++;
-        m_cards.push(createCardByName(cardName,line));
-        /*    //todo add exception
-        } catch (InvalidCardNameException &e) {
-            cerr << e.what();
-            printInvalidName();
-        }*/
+    for (char const &c: name) {
+        if (!isalpha(c)) {
+            return false;
+        }
     }
-    if (m_cards.size() < 5){
-        throw DeckFileInvalidSize("Deck File Error: Deck size is invalid");
+    return true;
+}
+
+unique_ptr<Card> createCardByName(string &name, const int LINE_ERROR) {
+    if (name == "Barfight") {
+        return unique_ptr<Card>(new Barfight());
     }
-    printStartGameMessage();
-    insertPlayers(m_players);
+    if (name == "Dragon") {
+        return unique_ptr<Card>(new Dragon());
+    }
+    if (name == "Gremlin") {
+        return unique_ptr<Card>(new Gremlin());
+    }
+    if (name == "Mana") {
+        return unique_ptr<Card>(new Mana());
+    }
+    if (name == "Merchant") {
+        return unique_ptr<Card>(new Merchant());
+    }
+    if (name == "Treasure") {
+        return unique_ptr<Card>(new Treasure());
+    }
+    if (name == "Well") {
+        return unique_ptr<Card>(new Well());
+    }
+    if (name == "Witch") {
+        return unique_ptr<Card>(new Witch());
+    }
+    throw DeckFileFormatError("Deck File Error: File format error in line " + to_string(LINE_ERROR));
+}
+
+unique_ptr<Player> createPlayer(string &playerName, string &playerClass) {
+    if (!nameIsLegal(playerName)) {
+        throw InvalidPlayerNameException("name of player is illegal");
+    }
+    if (playerClass == NINJA) {
+        return unique_ptr<Player>(new Ninja(playerName));
+    }
+    if (playerClass == WARRIOR) {
+        return unique_ptr<Player>(new Warrior(playerName));
+    }
+    if (playerClass == HEALER) {
+        return unique_ptr<Player>(new Healer(playerName));
+    }
+    throw InvalidClassException("class is illegal");
 }
 
 
@@ -50,7 +77,6 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     bool validSize = false;
     while (!validSize) {
         cin >> teamSize;
-        //todo add exception for non numbers
         if (cin.fail()) {
             // input is not an integer
             cin.clear();
@@ -68,8 +94,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     string playerClass;
     bool flagReInput = false;
     for (int i = 0; i < teamSize; ++i) {
-        if(!flagReInput)
-        {
+        if (!flagReInput) {
             printInsertPlayerMessage();
         }
         cin >> playerName >> playerClass;
@@ -77,13 +102,11 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
             players.push_back(createPlayer(playerName, playerClass));
             flagReInput = false;
         } catch (InvalidPlayerNameException &e) {
-            // cerr << e.what(); todo not needed
             printInvalidName();
             i -= 1;
             flagReInput = true;
         }
         catch (InvalidClassException &e) {
-            //cerr << e.what(); todo not needed
             printInvalidClass();
             i -= 1;
             flagReInput = true;
@@ -91,28 +114,53 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     }
 }
 
+//-----------------Mtmchkin Class-----------------------//
+Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Player>>()),
+                                                  m_cards(queue<unique_ptr<Card>>()),
+                                                  m_losers(deque<unique_ptr<Player>>()),
+                                                  m_winners(deque<unique_ptr<Player>>()),
+                                                  m_roundCount(0) {
+
+    std::ifstream readFile(fileName);
+    if (!readFile.is_open()) {
+        throw DeckFileNotFound("Deck File Error: File not found");
+    }
+    string cardName;
+    int line = 0;
+    while (getline(readFile, cardName)) {
+        line++;
+        m_cards.push(createCardByName(cardName, line));
+    }
+    if (m_cards.size() < 5) {
+        throw DeckFileInvalidSize("Deck File Error: Deck size is invalid");
+    }
+    printStartGameMessage();
+    insertPlayers(m_players);
+}
+
+
 void Mtmchkin::playRound() {
     m_roundCount += 1;
     printRoundStartMessage(getNumberOfRounds());
     deque<unique_ptr<Player>> tmpPlayers;
     //while (!isGameOver()) {
-        while (!m_players.empty()) {
-            printTurnStartMessage(m_players.front()->getName());
-            m_cards.front()->applyEncounter(*(m_players.front()));
-            m_cards.push(std::move(m_cards.front()));
-            m_cards.pop();
-            if (m_players.front()->isKnockedOut()) {
-                m_losers.push_front(std::move(m_players.front()));
-            } else if (m_players.front()->getLevel() == 10) {
-                m_winners.push_back(std::move(m_players.front()));
-            } else {
-                tmpPlayers.push_back(std::move(m_players.front()));
-            }
-            m_players.pop_front();
+    while (!m_players.empty()) {
+        printTurnStartMessage(m_players.front()->getName());
+        m_cards.front()->applyEncounter(*(m_players.front()));
+        m_cards.push(std::move(m_cards.front()));
+        m_cards.pop();
+        if (m_players.front()->isKnockedOut()) {
+            m_losers.push_front(std::move(m_players.front()));
+        } else if (m_players.front()->getLevel() == 10) {
+            m_winners.push_back(std::move(m_players.front()));
+        } else {
+            tmpPlayers.push_back(std::move(m_players.front()));
         }
-        m_players.swap(tmpPlayers);
+        m_players.pop_front();
+    }
+    m_players.swap(tmpPlayers);
     //}
-    if(isGameOver()) {
+    if (isGameOver()) {
         printGameEndMessage();
     }
 }
@@ -142,59 +190,4 @@ void Mtmchkin::printLeaderBoard() const {
     }
 }
 
-unique_ptr<Card> createCardByName(string &name, const int LINE_ERROR) {
-    if (name == "Barfight") {
-        return unique_ptr<Card>(new Barfight());
-    }
-    if (name == "Dragon") {
-        return unique_ptr<Card>(new Dragon());
-    }
-    if (name == "Gremlin") {
-        return unique_ptr<Card>(new Gremlin());
-    }
-    if (name == "Mana") {
-        return unique_ptr<Card>(new Mana());
-    }
-    if (name == "Merchant") {
-        return unique_ptr<Card>(new Merchant());
-    }
-    if (name == "Treasure") {
-        return unique_ptr<Card>(new Treasure());
-    }
-    if (name == "Well") {
-        return unique_ptr<Card>(new Well());
-    }
-    if (name == "Witch") {
-        return unique_ptr<Card>(new Witch());
-    }
-    throw DeckFileFormatError( "Deck File Error: File format error in line "+to_string(LINE_ERROR));
-}
 
-unique_ptr<Player> createPlayer(string &playerName, string &playerClass) {
-    if (!nameIsLegal(playerName)) {
-        throw InvalidPlayerNameException("name of player is illegal");
-    }
-    if (playerClass == NINJA) {
-        return unique_ptr<Player>(new Ninja(playerName));
-    }
-    if (playerClass == WARRIOR) {
-        return unique_ptr<Player>(new Warrior(playerName));
-    }
-    if (playerClass == HEALER) {
-        return unique_ptr<Player>(new Healer(playerName));
-    }
-    throw InvalidClassException("class is illegal");
-}
-
-//todo where to declare function? should be static?
-bool nameIsLegal(string &name) {
-    if (name.length() > 15) {
-        return false;
-    }
-    for (char const &c: name) {
-        if (!isalpha(c)) {
-            return false;
-        }
-    }
-    return true;
-}
