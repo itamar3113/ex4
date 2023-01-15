@@ -4,7 +4,7 @@
 
 #include "BattleCard.h"
 
-BattleCard::BattleCard(int force, int damage, int coins, bool isDragon) : m_force(force), //todo better way for dragon and witch
+BattleCard::BattleCard(int force, int damage, int coins, bool isDragon) : m_force(force),
                                                                         m_damage(damage), m_coins(coins) {}
 
 void BattleCard::applyEncounter(Player &player) const {
