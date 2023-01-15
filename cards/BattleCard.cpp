@@ -9,7 +9,6 @@ BattleCard::BattleCard(int force, int damage, int coins, bool isDragon) : m_forc
 
 void BattleCard::applyEncounter(Player &player) const {
     if (player.getAttackStrength() >= this->m_force) {
-        player.heal(1);
         player.addCoins(this->m_coins);
         printWinBattle(player.getName(), getName());
         player.levelUp();

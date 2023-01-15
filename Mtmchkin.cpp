@@ -83,6 +83,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
             teamSize = stoi(input);
             if (teamSize > MAX_TEAM_SIZE || teamSize < MIN_TEAM_SIZE) {
                 printInvalidTeamSize();
+                printEnterTeamSizeMessage();
             } else {
                 validSize = true;
             }
