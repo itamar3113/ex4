@@ -4,7 +4,7 @@
 
 #include "BattleCard.h"
 
-BattleCard::BattleCard(int force, int damage, int coins, bool isDragon) : m_force(force),
+BattleCard::BattleCard(int force, int damage, int coins, bool isDragon) : m_force(force), //todo better way for dragon and witch
                                                                         m_damage(damage), m_coins(coins) {}
 
 void BattleCard::applyEncounter(Player &player) const {
@@ -15,6 +15,10 @@ void BattleCard::applyEncounter(Player &player) const {
         player.levelUp();
     } else {
         player.damage(m_damage);
+        if(this->getName()=="Witch")
+        {
+            player.damageForce(1);
+        }
         printLossBattle(player.getName(), getName());
     }
 }

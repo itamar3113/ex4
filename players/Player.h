@@ -78,6 +78,12 @@ public:
     void damage(int amount);
 
     /*
+    Drops the player's m_force in the amount received as an argument.
+    @param amount - the amount to drop the m_force.
+    */
+    void damageForce(int amount);
+
+    /*
     @return - True if m_HP = 0,
               False otherwise.
     */

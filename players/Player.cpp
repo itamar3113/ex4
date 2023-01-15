@@ -84,6 +84,17 @@ void Player::damage(int amount) {
     }
 }
 
+void Player::damageForce(int amount) {
+    if (amount > 0) {
+        if (this->m_force - amount > 0) {
+            this->m_force -= amount;
+        } else {
+            this->m_force = 0;
+        }
+    }
+
+}
+
 bool Player::isKnockedOut() const {
     return !(this->m_HP);
 }
