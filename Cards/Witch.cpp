@@ -5,11 +5,11 @@
 #include "Witch.h"
 
 const string NAME = "Witch";
-const int FORCE = 12;
+const int FORCE = 11;
 const int DAMAGE = 10;
-const int COINS = 3;
+const int COINS = 2;
 
-Witch::Witch() : BattleCard(FORCE, DAMAGE, COINS) {}
+Witch::Witch() : BattleCard(FORCE, DAMAGE, COINS, false) {}
 
 string Witch::getName() const {
     return NAME;
