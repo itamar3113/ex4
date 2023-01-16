@@ -115,6 +115,7 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
             flagReInput = true;
         }
     }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 //-----------------Mtmchkin Class-----------------------//
