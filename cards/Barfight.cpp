@@ -15,7 +15,7 @@ void Barfight::applyEncounter(Player &player) const {
         player.damage(DAMAGE);
         printBarfightMessage(false);
     } else{
-        printManaMessage(true);
+        printBarfightMessage(true);
     }
 }
 

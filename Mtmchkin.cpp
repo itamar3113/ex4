@@ -124,6 +124,7 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
                                                   m_winners(deque<unique_ptr<Player>>()),
                                                   m_roundCount(0) {
 
+    printStartGameMessage();
     std::ifstream readFile(fileName);
     if (!readFile.is_open()) {
         throw DeckFileNotFound("Deck File Error: File not found");
@@ -137,7 +138,6 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
     if (m_cards.size() < 5) {
         throw DeckFileInvalidSize("Deck File Error: Deck size is invalid");
     }
-    printStartGameMessage();
     insertPlayers(m_players);
 }
 
