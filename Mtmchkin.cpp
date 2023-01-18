@@ -16,7 +16,7 @@ const string HEALER = "Healer";
 //-----------------Non Members Functions -----------------------//
 
 bool nameIsLegal(string &name) {
-    if (name.length() > 15) {
+    if (name.length() > 15 || name.length() == 0) {
         return false;
     }
     for (char const &c: name) {
@@ -71,6 +71,11 @@ unique_ptr<Player> createPlayer(string &playerName, string &playerClass) {
     throw InvalidClassException("class is illegal");
 }
 
+void deleteWrappedSpaces(string& str)
+{
+        str.erase(0,str.find_first_not_of(' ')); // remove the first spaces
+        str.erase(str.find_last_not_of(' ')+1); // remove the last spaces
+}
 
 void insertPlayers(deque<unique_ptr<Player>> &players) {
     printEnterTeamSizeMessage();
@@ -79,7 +84,8 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     string input;
     while (!validSize) {
         getline(cin, input);
-        if (all_of(input.begin(), input.end(), ::isdigit)) {
+        deleteWrappedSpaces(input);
+        if ((all_of(input.begin(), input.end(), ::isdigit))&&!(input.empty())) {
             teamSize = stoi(input);
             if (teamSize > MAX_TEAM_SIZE || teamSize < MIN_TEAM_SIZE) {
                 printInvalidTeamSize();
@@ -95,27 +101,40 @@ void insertPlayers(deque<unique_ptr<Player>> &players) {
     }
     string playerName;
     string playerClass;
+    int index;
     bool flagReInput = false;
     for (int i = 0; i < teamSize; ++i) {
         if (!flagReInput) {
             printInsertPlayerMessage();
         }
-        cin >> playerName >> playerClass;
-        try {
-            players.push_back(createPlayer(playerName, playerClass));
-            flagReInput = false;
-        } catch (InvalidPlayerNameException &e) {
-            printInvalidName();
-            i -= 1;
+        getline(std::cin,input);
+        if(input.empty())
+        {
+            i-=1;
             flagReInput = true;
         }
-        catch (InvalidClassException &e) {
-            printInvalidClass();
-            i -= 1;
-            flagReInput = true;
+        else
+        {
+            deleteWrappedSpaces(input);
+            index = input.find(' ');
+            playerName = input.substr(0,index);
+            playerClass = input.substr(index+1);
+            deleteWrappedSpaces(playerClass);
+            try {
+                players.push_back(createPlayer(playerName, playerClass));
+                flagReInput = false;
+            } catch (InvalidPlayerNameException &e) {
+                printInvalidName();
+                i -= 1;
+                flagReInput = true;
+            }
+            catch (InvalidClassException &e) {
+                printInvalidClass();
+                i -= 1;
+                flagReInput = true;
+            }
         }
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 //-----------------Mtmchkin Class-----------------------//
@@ -132,7 +151,8 @@ Mtmchkin::Mtmchkin(const std::string &fileName) : m_players(deque<unique_ptr<Pla
     }
     string cardName;
     int line = 0;
-    while (getline(readFile, cardName)) {
+    while (getline(readFile, cardName)) 
+    {
         line++;
         m_cards.push(createCardByName(cardName, line));
     }
